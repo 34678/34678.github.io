@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+    <script type="text/javascript">
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        var posList = [
+            'left', 'right', 'top', 'bottom',
+            'inside',
+            'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+            'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+        ];
+
+        app.configParameters = {
+            rotate: {
+                min: -90,
+                max: 90
+            },
+            align: {
+                options: {
+                    left: 'left',
+                    center: 'center',
+                    right: 'right'
+                }
+            },
+            verticalAlign: {
+                options: {
+                    top: 'top',
+                    middle: 'middle',
+                    bottom: 'bottom'
+                }
+            },
+            position: {
+                options: echarts.util.reduce(posList, function(map, pos) {
+                    map[pos] = pos;
+                    return map;
+                }, {})
+            },
+            distance: {
+                min: 0,
+                max: 100
+            }
+        };
+
+        app.config = {
+            rotate: 90,
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+            distance: 15,
+            onChange: function() {
+                var labelOption = {
+                    normal: {
+                        rotate: app.config.rotate,
+                        align: app.config.align,
+                        verticalAlign: app.config.verticalAlign,
+                        position: app.config.position,
+                        distance: app.config.distance
+                    }
+                };
+                myChart.setOption({
+                    series: [{
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }]
+                });
+            }
+        };
+
+
+        var labelOption = {
+            normal: {
+                show: true,
+                position: app.config.position,
+                distance: app.config.distance,
+                align: app.config.align,
+                verticalAlign: app.config.verticalAlign,
+                rotate: app.config.rotate,
+                formatter: '  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: 'transparent',
+                        color:'#ffffff'
+                    }
+                }
+            }
+        };
+
+        option = {
+            color: ['#C07ABB', '#A6A6D2', '#81C0C0', '#FFED97', '#CF9E9E'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['广东', '江苏', '上海', '浙江', '北京']
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar', 'stack', 'tiled']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                axisTick: {
+                    show: false
+                },
+                data: ['2014', '2015', '2016', '2017', '2018']
+            }],
+            yAxis: [{
+                type: 'value'
+            }],
+            series: [{
+                name: '广东',
+                type: 'bar',
+                barGap: 0,
+                label: labelOption,
+                data: [588846367, 542747830, 470284515, 471332655, 490421387]
+            }, {
+                name: '江苏',
+                type: 'bar',
+                label: labelOption,
+                data: [349803193, 337297685, 325958399, 376801274, 408210443]
+            }, {
+                name: '上海',
+                type: 'bar',
+                label: labelOption,
+                data: [310115138, 300702596, 286260912, 317358055, 332613672]
+            }, {
+                name: '浙江',
+                type: 'bar',
+                label: labelOption,
+                data: [96771663, 84142304, 75285914, 80854880, 86987989]
+            }, {
+                name: '北京',
+                type: 'bar',
+                label: labelOption,
+                data: [79357856, 65161798, 64379739, 65879775, 72570561]
+            }]
+        };;
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    </script>
+</body>
+
+</html>
